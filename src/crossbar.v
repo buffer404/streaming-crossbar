@@ -18,18 +18,18 @@ module crossbar
     integer i;
     integer j;
 
-    always @(grant_i) begin
+    always @(grant_i or rst) begin
         if(rst) begin
             for (i = 0; i < S_DATA_COUNT; i = i + 1) begin
                 for (j = 0; j < M_DATA_COUNT; j = j + 1) begin
-                     m_data_o[j * T_DATA_WIDTH +: T_DATA_WIDTH] = 0;
+                     m_data_o[j * T_DATA_WIDTH +: T_DATA_WIDTH] <= 0;
                 end
             end
         end else begin    
             for (i = 0; i < M_DATA_COUNT; i = i + 1) begin
                 for (j = 0; j < S_DATA_COUNT; j = j + 1) begin
                     if(grant_i[i * S_DATA_COUNT + j] == 1) begin
-                        m_data_o[i * T_DATA_WIDTH +: T_DATA_WIDTH] = s_data_i[j * T_DATA_WIDTH +: T_DATA_WIDTH];
+                        m_data_o[i * T_DATA_WIDTH +: T_DATA_WIDTH] <= s_data_i[j * T_DATA_WIDTH +: T_DATA_WIDTH];
                     end
                 end
             end

@@ -49,6 +49,7 @@ module top_tb;
 
     initial begin
 
+        clear();
         test1();
         clear();
 
