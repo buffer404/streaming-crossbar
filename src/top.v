@@ -2,8 +2,8 @@
 
 module top
     #(  parameter   T_DATA_WIDTH = 8,
-        parameter   S_DATA_COUNT = 5,
-        parameter   M_DATA_COUNT = 3,
+        parameter   S_DATA_COUNT = 2,
+        parameter   M_DATA_COUNT = 2,
         parameter   T_ID___WIDTH = $clog2(S_DATA_COUNT),
         parameter   T_DEST_WIDTH = $clog2(M_DATA_COUNT)) (
         
