@@ -38,7 +38,8 @@ module schedule
                 .s_last_i(last_mask[i*S_DATA_COUNT +: S_DATA_COUNT]),
                 .grant_o(grant_o[i * S_DATA_COUNT +: S_DATA_COUNT]), 
                 .m_last_o(m_last_o[i]), 
-                .m_id_o(m_id_o[i * T_ID___WIDTH +: T_ID___WIDTH])
+                .m_id_o(m_id_o[i * T_ID___WIDTH +: T_ID___WIDTH]), 
+                .m_valid_o(m_valid_o[i])
             );
         end
     endgenerate
@@ -66,6 +67,5 @@ module schedule
     end
 
     assign s_ready_o = s_valid_i;
-    assign m_valid_o = m_ready_i; 
 
 endmodule

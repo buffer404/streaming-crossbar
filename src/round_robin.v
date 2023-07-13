@@ -13,44 +13,49 @@ module round_robin
 
 		output reg [S_DATA_COUNT - 1 : 0] grant_o, 
 		output reg m_last_o,
-		output [T_ID___WIDTH - 1 : 0] m_id_o
+		output [T_ID___WIDTH - 1 : 0] m_id_o,
+		output reg m_valid_o
     );
 
 	reg [T_ID___WIDTH - 1:0] state;
+	reg first_one;
 
 	always @ (*) begin: next_grant
 		integer i;
-		integer first_one;
+
 		first_one = 0;
 		grant_o = 0;
+		m_valid_o = 0;
 
 		if(rst) begin
 			state = 0;
 			m_last_o = 0;
+			first_one = 0;
+			grant_o = 0;
+			
 		end else begin
-
 			if(m_last_o) begin
+				m_last_o = 0;
 				if(state == S_DATA_COUNT - 1) begin
 					state = 0;
 				end	else begin
 					state = state + 1;
 				end
-			
 			end
+			
+			if(m_valid_o) m_valid_o = 0;
 
 			for (i = 0; i < S_DATA_COUNT; i = i + 1) begin
 				if (request_mask_i[(state + i) % S_DATA_COUNT] && !first_one) begin
 					grant_o[(state + i) % S_DATA_COUNT] = 1'b1;
 					first_one = 1;
+					m_valid_o = 1;
+					if (s_last_i[(state + i) % S_DATA_COUNT]) m_last_o = 1;
 					state = (state + i) % S_DATA_COUNT;
 				end else begin
 					grant_o[(state + i) % S_DATA_COUNT] = 1'b0;
 				end
 			end
-
-			if (s_last_i[state]) begin
-				m_last_o = 1;
-			end else m_last_o = 0;
 
 		end
 	end

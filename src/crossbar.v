@@ -18,7 +18,7 @@ module crossbar
     integer i;
     integer j;
 
-    always @(grant_i or rst) begin
+    always @(grant_i or rst or s_data_i) begin
         if(rst) begin
             for (i = 0; i < S_DATA_COUNT; i = i + 1) begin
                 for (j = 0; j < M_DATA_COUNT; j = j + 1) begin
